@@ -1,0 +1,37 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(6, 100px);
+  grid-auto-rows: 100px;
+  gap: 5px;
+  padding: 20px;
+  overflow-y: scroll;
+  max-height: 650px;
+  width: auto;
+}
+.listItem {
+  list-style-type: none;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
+}
+.listItem:hover .pokemonName {
+  opacity: 1;
+}
+.pokemonName {
+  position: absolute;
+  top: 0px;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  padding: 3px 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 15px;
+  opacity: 0;
+  transition: all ease-in-out 0.2s;
+}
+.pokemonImg {
+  max-width: 80px;
+}

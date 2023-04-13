@@ -1,0 +1,15 @@
+.searchPoke {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 7px 15px;
+  border-radius: 5px;
+  height: 38px;
+  outline: none;
+  border: none;
+  width: 425px;
+  margin-left: 120px;
+  margin-bottom: 5px;
+}
+.searchPoke::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}

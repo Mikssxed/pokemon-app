@@ -3,10 +3,11 @@
   grid-template-columns: repeat(6, 100px);
   grid-auto-rows: 100px;
   gap: 5px;
-  padding: 20px;
+  padding: 0px 20px;
   overflow-y: scroll;
-  max-height: 650px;
+  max-height: 540px;
   width: auto;
+  padding-top: 15px;
 }
 .listItem {
   list-style-type: none;
@@ -34,4 +35,7 @@
 }
 .pokemonImg {
   max-width: 80px;
+}
+.section {
+  margin-top: 20px;
 }

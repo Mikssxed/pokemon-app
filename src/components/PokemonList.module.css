@@ -39,3 +39,24 @@
 .section {
   margin-top: 20px;
 }
+.addButton {
+  display: block;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 7px 15px;
+  border-radius: 5px;
+  height: 38px;
+  outline: none;
+  border: none;
+  margin-top: 30px;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.addButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.selected {
+  background-color: rgb(168, 143, 0);
+}

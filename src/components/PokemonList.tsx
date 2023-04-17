@@ -11,6 +11,8 @@ interface Pokemon {
 const PokemonList: FC = () => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [searchPokemon, setSearchPokemon] = useState<string>("");
+  const [isSelected, setIsSelected] = useState(false);
+  const [isActive, setIsActive] = useState<Number | null>(null);
 
   useEffect(() => {
     axios
@@ -38,8 +40,22 @@ const PokemonList: FC = () => {
 
   const listToFilter = searchPokemon ? filteredList : pokemonList;
 
+  const selectPokemon = (number: number) => {
+    setIsSelected(true);
+    setIsActive(number);
+  };
+
   const fullList = listToFilter.map((pokemon, index) => (
-    <li className={classes.listItem} key={index}>
+    <li
+      onClick={() => selectPokemon(index)}
+      id={`${index}`}
+      className={
+        isActive === index
+          ? `${classes.listItem} ${classes.selected}`
+          : classes.listItem
+      }
+      key={index}
+    >
       <img
         loading="lazy"
         className={classes.pokemonImg}
@@ -56,6 +72,9 @@ const PokemonList: FC = () => {
     <div className={classes.section}>
       <SearchPokemon input={searchPokemon} onChange={inputChangeHandler} />
       <ul className={classes.container}>{fullList}</ul>
+      <button disabled={!isSelected} className={classes.addButton}>
+        Add Pokemon
+      </button>
     </div>
   );
 };

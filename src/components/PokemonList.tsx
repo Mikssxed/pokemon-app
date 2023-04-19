@@ -1,37 +1,26 @@
-import { ChangeEvent, FC, useEffect, useState } from "react";
-import axios from "axios";
+import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
 import classes from "./PokemonList.module.css";
 import SearchPokemon from "./SearchPokemon";
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
+import PokemonListContext from "../store/pokemonList-context";
 
 const PokemonList: FC = () => {
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [searchPokemon, setSearchPokemon] = useState<string>("");
-  const [isSelected, setIsSelected] = useState(false);
-  const [isActive, setIsActive] = useState<Number | null>(null);
+  const {
+    pokemonList,
+    isActive,
+    loadPokemon,
+    getNumberFromUrl,
+    selectPokemon,
+    isSelected,
+    addPokemon,
+  } = useContext(PokemonListContext);
 
   useEffect(() => {
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon-species?limit=905")
-      .then((res) => {
-        setPokemonList(res.data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching Pokemon:", error);
-      });
+    loadPokemon();
   }, []);
 
   const inputChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchPokemon((e.target as HTMLInputElement).value);
-  };
-
-  const getNumberFromUrl = (url: string) => {
-    const numberUrl = url.split("/")[6];
-    return numberUrl;
   };
 
   const filteredList = pokemonList.filter((i) =>
@@ -40,17 +29,11 @@ const PokemonList: FC = () => {
 
   const listToFilter = searchPokemon ? filteredList : pokemonList;
 
-  const selectPokemon = (number: number) => {
-    setIsSelected(true);
-    setIsActive(number);
-  };
-
   const fullList = listToFilter.map((pokemon, index) => (
     <li
-      onClick={() => selectPokemon(index)}
-      id={`${index}`}
+      onClick={() => selectPokemon(pokemon.name)}
       className={
-        isActive === index
+        isActive === pokemon.name
           ? `${classes.listItem} ${classes.selected}`
           : classes.listItem
       }
@@ -72,7 +55,11 @@ const PokemonList: FC = () => {
     <div className={classes.section}>
       <SearchPokemon input={searchPokemon} onChange={inputChangeHandler} />
       <ul className={classes.container}>{fullList}</ul>
-      <button disabled={!isSelected} className={classes.addButton}>
+      <button
+        onClick={addPokemon}
+        disabled={!isSelected}
+        className={classes.addButton}
+      >
         Add Pokemon
       </button>
     </div>

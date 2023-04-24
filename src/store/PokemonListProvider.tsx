@@ -1,16 +1,7 @@
 import { FC, ReactNode, useState } from "react";
 import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
-
-interface Pokemon {
-  name: string;
-  url: string;
-}
-interface PokemonTeam {
-  name: string | null;
-  url?: string;
-  id: number;
-}
+import { Pokemon, PokemonTeam } from "../utils/types/types";
 
 const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
@@ -41,7 +32,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     return numberUrl;
   };
 
-  const selectPokemon = (string: string) => {
+  const selectPokemon = (string: string | null) => {
     setIsSelected(true);
     setIsActive(string);
   };
@@ -53,17 +44,34 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       updatedTeam[index] = {
         id: updatedTeam[index].id,
         name: isActive,
+        url: pokemonList.find((p) => p.name === isActive)!.url,
       };
+
+      setPokemonList(pokemonList.filter((p) => p.name !== isActive));
+
       setSelectedPokemon(updatedTeam);
     } else {
       console.log("Team is full");
     }
   };
 
+  const removePokemonHandler = (string: string | null) => {
+    selectPokemon(string);
+
+    const removedPokemon = selectedPokemon.findIndex((p) => p.name === string);
+    const updatedTeam = [...selectedPokemon];
+    updatedTeam[removedPokemon] = {
+      id: updatedTeam[removedPokemon].id,
+      name: "",
+      url: "",
+    };
+    setSelectedPokemon(updatedTeam);
+  };
+
   console.log(selectedPokemon);
 
   const pokemonContext = {
-    selectedPokemons: [{}],
+    selectedPokemons: selectedPokemon,
     addPokemon: addPokemonHandler,
     loadPokemon: loadPokemonHandler,
     pokemonList: pokemonList,
@@ -71,6 +79,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     getNumberFromUrl: getNumberFromUrl,
     selectPokemon: selectPokemon,
     isSelected: isSelected,
+    removePokemon: removePokemonHandler,
   };
 
   return (

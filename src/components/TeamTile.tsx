@@ -1,7 +1,31 @@
+import { FC, useContext } from "react";
 import classes from "./TeamTile.module.css";
+import { PokemonTeam } from "../utils/types/types";
+import PokemonListContext from "../store/pokemonList-context";
 
-const TeamTile = () => {
-  return <div className={classes.tile}></div>;
+const TeamTile: FC<{ pokemonData: PokemonTeam; onClick: () => void }> = ({
+  pokemonData,
+  onClick,
+}: {
+  pokemonData: PokemonTeam;
+  onClick: () => void;
+}) => {
+  const { getNumberFromUrl } = useContext(PokemonListContext);
+
+  return (
+    <div onClick={onClick} className={classes.tile}>
+      {pokemonData.name && (
+        <>
+          <h3>{pokemonData.name}</h3>
+          <img
+            src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getNumberFromUrl(
+              pokemonData.url
+            )}.png`}
+          />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default TeamTile;

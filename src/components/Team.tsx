@@ -1,21 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import pokeball from "../assets/white-pokeball.png";
 
 import classes from "./Team.module.css";
 import TeamTile from "./TeamTile";
+import PokemonListContext from "../store/pokemonList-context";
 
 const Team = () => {
-  const [selectedPokemon, setSelectedPokemon] = useState([
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]);
+  const { selectedPokemons, removePokemon } = useContext(PokemonListContext);
 
-  const pokemonTeam = selectedPokemon.map((pokemon, index) => (
-    <TeamTile key={index} />
+  const pokemonTeam = selectedPokemons.map((pokemon, index) => (
+    <TeamTile
+      onClick={() => removePokemon(pokemon.name)}
+      pokemonData={pokemon}
+      key={index}
+    />
   ));
 
   return (

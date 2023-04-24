@@ -1,10 +1,6 @@
-import { ChangeEvent, FC } from "react";
+import { FC } from "react";
 import classes from "./SearchPokemon.module.css";
-
-interface AttributesType {
-  input: string | undefined;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
+import { AttributesType } from "../utils/types/types";
 
 const SearchPokemon: FC<AttributesType> = ({
   input,

@@ -1,11 +1,40 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useReducer, useState } from "react";
 import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
 import { Pokemon, PokemonTeam } from "../utils/types/types";
 
+enum manageActionType {
+  SELECT = "SELECT",
+}
+
+interface manageState {
+  isSelected: boolean;
+  // isActive: string | null;
+  // selectedPokemon: PokemonTeam[];
+}
+
+interface manageAction {
+  type: manageActionType;
+  isSelected: boolean;
+}
+
+const managePokemonReducer = (state: manageState, action: manageAction) => {
+  switch (action.type) {
+    case manageActionType.SELECT:
+      return {
+        ...state,
+        isSelected: action.isSelected,
+      };
+    default:
+      throw new Error("should not appear");
+  }
+};
+
 const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
+  const [state, dispatch] = useReducer(managePokemonReducer, {
+    isSelected: false,
+  });
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [isSelected, setIsSelected] = useState(false);
   const [isActive, setIsActive] = useState<string | null>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonTeam[]>([
     { id: 1, name: "", url: "" },
@@ -33,7 +62,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   const selectPokemon = (string: string | null) => {
-    setIsSelected(true);
+    dispatch({ type: manageActionType.SELECT, isSelected: true });
     setIsActive(string);
   };
 
@@ -50,25 +79,42 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       setPokemonList(pokemonList.filter((p) => p.name !== isActive));
 
       setSelectedPokemon(updatedTeam);
+      dispatch({ type: manageActionType.SELECT, isSelected: false });
     } else {
       console.log("Team is full");
     }
+  };
+
+  const sortPokemonList = (list: Pokemon[]) => {
+    return list.sort(
+      (prev, now) => +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
+    );
   };
 
   const removePokemonHandler = (string: string | null) => {
     selectPokemon(string);
 
     const removedPokemon = selectedPokemon.findIndex((p) => p.name === string);
+    const removedPokemonData = selectedPokemon.find((p) => p.name === string);
     const updatedTeam = [...selectedPokemon];
     updatedTeam[removedPokemon] = {
       id: updatedTeam[removedPokemon].id,
       name: "",
       url: "",
     };
+
+    setPokemonList(
+      sortPokemonList([
+        ...pokemonList,
+        {
+          name: removedPokemonData!.name,
+          url: removedPokemonData!.url,
+        } as Pokemon,
+      ])
+    );
+
     setSelectedPokemon(updatedTeam);
   };
-
-  console.log(selectedPokemon);
 
   const pokemonContext = {
     selectedPokemons: selectedPokemon,
@@ -78,7 +124,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     isActive: isActive,
     getNumberFromUrl: getNumberFromUrl,
     selectPokemon: selectPokemon,
-    isSelected: isSelected,
+    isSelected: state.isSelected,
     removePokemon: removePokemonHandler,
   };
 

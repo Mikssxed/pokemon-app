@@ -3,28 +3,39 @@ import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
 import { Pokemon, PokemonTeam } from "../utils/types/types";
 
-enum manageActionType {
-  SELECT = "SELECT",
-}
+// enum manageActionType {
+//   SELECT = "SELECT",
+//   SET = "SET",
+// }
 
 interface manageState {
   isSelected: boolean;
+  selectedPokemon: string | null;
   // isActive: string | null;
   // selectedPokemon: PokemonTeam[];
 }
 
-interface manageAction {
-  type: manageActionType;
-  isSelected: boolean;
-}
+type Select = {
+  type: "SELECT";
+  payload: boolean;
+};
+
+type Set = {
+  type: "SET";
+  payload: string | null;
+};
+
+type manageAction = Select | Set;
 
 const managePokemonReducer = (state: manageState, action: manageAction) => {
   switch (action.type) {
-    case manageActionType.SELECT:
+    case "SELECT":
       return {
         ...state,
-        isSelected: action.isSelected,
+        isSelected: action.payload,
       };
+    case "SET":
+      return { ...state, selectedPokemon: action.payload };
     default:
       throw new Error("should not appear");
   }
@@ -33,9 +44,10 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
 const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(managePokemonReducer, {
     isSelected: false,
+    selectedPokemon: null,
   });
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  const [isActive, setIsActive] = useState<string | null>(null);
+  // const [isActive, setIsActive] = useState<string | null>(null);
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonTeam[]>([
     { id: 1, name: "", url: "" },
     { id: 2, name: "", url: "" },
@@ -62,8 +74,8 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   const selectPokemon = (string: string | null) => {
-    dispatch({ type: manageActionType.SELECT, isSelected: true });
-    setIsActive(string);
+    dispatch({ type: "SELECT", payload: true });
+    dispatch({ type: "SET", payload: string });
   };
 
   const addPokemonHandler = () => {
@@ -72,14 +84,16 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       const updatedTeam = [...selectedPokemon];
       updatedTeam[index] = {
         id: updatedTeam[index].id,
-        name: isActive,
-        url: pokemonList.find((p) => p.name === isActive)!.url,
+        name: state.selectedPokemon,
+        url: pokemonList.find((p) => p.name === state.selectedPokemon)!.url,
       };
 
-      setPokemonList(pokemonList.filter((p) => p.name !== isActive));
+      setPokemonList(
+        pokemonList.filter((p) => p.name !== state.selectedPokemon)
+      );
 
       setSelectedPokemon(updatedTeam);
-      dispatch({ type: manageActionType.SELECT, isSelected: false });
+      dispatch({ type: "SELECT", payload: false });
     } else {
       console.log("Team is full");
     }
@@ -121,7 +135,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     addPokemon: addPokemonHandler,
     loadPokemon: loadPokemonHandler,
     pokemonList: pokemonList,
-    isActive: isActive,
+    isActive: state.selectedPokemon,
     getNumberFromUrl: getNumberFromUrl,
     selectPokemon: selectPokemon,
     isSelected: state.isSelected,

@@ -1,19 +1,24 @@
-import { FC, ReactNode, useReducer, useState } from "react";
+import { FC, ReactNode, useReducer } from "react";
 import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
 import { Pokemon, PokemonTeam } from "../utils/types/types";
 
-// enum manageActionType {
-//   SELECT = "SELECT",
-//   SET = "SET",
-// }
-
 interface manageState {
   isSelected: boolean;
   selectedPokemon: string | null;
-  // isActive: string | null;
-  // selectedPokemon: PokemonTeam[];
+  pokemonList: Pokemon[];
+  pokemonTeam: PokemonTeam[];
 }
+
+type Load = {
+  type: "LOAD";
+  payload: Pokemon[];
+};
+
+type Add = {
+  type: "ADD";
+  payload: number;
+};
 
 type Select = {
   type: "SELECT";
@@ -25,7 +30,12 @@ type Set = {
   payload: string | null;
 };
 
-type manageAction = Select | Set;
+type Remove = {
+  type: "REMOVE";
+  payload: number;
+};
+
+type manageAction = Select | Set | Load | Add | Remove;
 
 const managePokemonReducer = (state: manageState, action: manageAction) => {
   switch (action.type) {
@@ -36,41 +46,97 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
       };
     case "SET":
       return { ...state, selectedPokemon: action.payload };
+    case "LOAD":
+      return {
+        ...state,
+        pokemonList: action.payload,
+      };
+    case "ADD":
+      return {
+        ...state,
+        pokemonList: state.pokemonList.filter(
+          (p) => p.name !== state.selectedPokemon
+        ),
+        pokemonTeam: state.pokemonTeam.map((p) => {
+          if (p.id === action.payload + 1) {
+            return {
+              ...p,
+              name: state.selectedPokemon,
+              url: state.pokemonList.find(
+                (pokemon) => pokemon.name === state.selectedPokemon
+              )!.url,
+            };
+          } else {
+            return p;
+          }
+        }),
+      };
+    case "REMOVE":
+      return {
+        ...state,
+        pokemonTeam: state.pokemonTeam
+          .map((p, i) => {
+            if (p.id === action.payload + 1) {
+              return {
+                ...p,
+                name: "",
+                url: "",
+              };
+            } else {
+              return p;
+            }
+          })
+          .sort((a, b) => b.name!.length - a.name!.length)
+          .map((p, i) => {
+            return { ...p, id: i + 1 };
+          }),
+        pokemonList: [
+          ...state.pokemonList,
+          {
+            name: state.pokemonTeam[action.payload].name,
+            url: state.pokemonTeam[action.payload].url,
+          } as Pokemon,
+        ].sort(
+          (prev, now) =>
+            +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
+        ),
+      };
     default:
       throw new Error("should not appear");
   }
+};
+
+const getNumberFromUrl = (url: string) => {
+  const numberUrl = url.split("/")[6];
+  return numberUrl;
 };
 
 const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   const [state, dispatch] = useReducer(managePokemonReducer, {
     isSelected: false,
     selectedPokemon: null,
+    pokemonList: [],
+    pokemonTeam: [
+      { id: 1, name: "", url: "" },
+      { id: 2, name: "", url: "" },
+      { id: 3, name: "", url: "" },
+      { id: 4, name: "", url: "" },
+      { id: 5, name: "", url: "" },
+      { id: 6, name: "", url: "" },
+    ],
   });
-  const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
-  // const [isActive, setIsActive] = useState<string | null>(null);
-  const [selectedPokemon, setSelectedPokemon] = useState<PokemonTeam[]>([
-    { id: 1, name: "", url: "" },
-    { id: 2, name: "", url: "" },
-    { id: 3, name: "", url: "" },
-    { id: 4, name: "", url: "" },
-    { id: 5, name: "", url: "" },
-    { id: 6, name: "", url: "" },
-  ]);
 
   const loadPokemonHandler = () => {
     axios
-      .get("https://pokeapi.co/api/v2/pokemon-species?limit=905")
+      .get<{ results: Pokemon[] }>(
+        "https://pokeapi.co/api/v2/pokemon-species?limit=905"
+      )
       .then((res) => {
-        setPokemonList(res.data.results);
+        dispatch({ type: "LOAD", payload: res.data.results });
       })
       .catch((error) => {
         console.error("Error fetching Pokemon:", error);
       });
-  };
-
-  const getNumberFromUrl = (url: string) => {
-    const numberUrl = url.split("/")[6];
-    return numberUrl;
   };
 
   const selectPokemon = (string: string | null) => {
@@ -79,62 +145,48 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   const addPokemonHandler = () => {
-    const index = selectedPokemon.findIndex((p) => !p.name);
+    const index: number = state.pokemonTeam.findIndex(
+      (p: PokemonTeam) => !p.name
+    );
     if (index !== -1) {
-      const updatedTeam = [...selectedPokemon];
-      updatedTeam[index] = {
-        id: updatedTeam[index].id,
-        name: state.selectedPokemon,
-        url: pokemonList.find((p) => p.name === state.selectedPokemon)!.url,
-      };
-
-      setPokemonList(
-        pokemonList.filter((p) => p.name !== state.selectedPokemon)
-      );
-
-      setSelectedPokemon(updatedTeam);
+      dispatch({ type: "ADD", payload: index });
       dispatch({ type: "SELECT", payload: false });
     } else {
       console.log("Team is full");
     }
   };
 
-  const sortPokemonList = (list: Pokemon[]) => {
-    return list.sort(
-      (prev, now) => +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
-    );
-  };
+  // const sortPokemonList = (list: Pokemon[]) => {
+  //   return list.sort(
+  //     (prev, now) => +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
+  //   );
+  // };
 
   const removePokemonHandler = (string: string | null) => {
     selectPokemon(string);
 
-    const removedPokemon = selectedPokemon.findIndex((p) => p.name === string);
-    const removedPokemonData = selectedPokemon.find((p) => p.name === string);
-    const updatedTeam = [...selectedPokemon];
-    updatedTeam[removedPokemon] = {
-      id: updatedTeam[removedPokemon].id,
-      name: "",
-      url: "",
-    };
-
-    setPokemonList(
-      sortPokemonList([
-        ...pokemonList,
-        {
-          name: removedPokemonData!.name,
-          url: removedPokemonData!.url,
-        } as Pokemon,
-      ])
+    const removedPokemon: number = state.pokemonTeam.findIndex(
+      (p) => p.name === string
     );
 
-    setSelectedPokemon(updatedTeam);
+    dispatch({ type: "REMOVE", payload: removedPokemon });
+
+    // setPokemonList(
+    //   sortPokemonList([
+    //     ...pokemonList,
+    //     {
+    //       name: removedPokemonData!.name,
+    //       url: removedPokemonData!.url,
+    //     } as Pokemon,
+    //   ])
+    // );
   };
 
   const pokemonContext = {
-    selectedPokemons: selectedPokemon,
+    selectedPokemons: state.pokemonTeam,
     addPokemon: addPokemonHandler,
     loadPokemon: loadPokemonHandler,
-    pokemonList: pokemonList,
+    pokemonList: state.pokemonList,
     isActive: state.selectedPokemon,
     getNumberFromUrl: getNumberFromUrl,
     selectPokemon: selectPokemon,

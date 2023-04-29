@@ -16,7 +16,10 @@ const TeamTile: FC<{ pokemonData: PokemonTeam; onClick: () => void }> = ({
     <div onClick={onClick} className={classes.tile}>
       {pokemonData.name && (
         <>
-          <h3>{pokemonData.name}</h3>
+          <header>
+            <div className={classes.levelBlock}>Lv. 100</div>
+            <h3>{pokemonData.name}</h3>
+          </header>
           <img
             src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${getNumberFromUrl(
               pokemonData.url

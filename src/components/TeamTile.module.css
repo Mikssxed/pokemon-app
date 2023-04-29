@@ -4,4 +4,26 @@
   height: 100px;
   border-radius: 15px;
   padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.tile header {
+  height: 100%;
+}
+.tile h3 {
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.levelBlock {
+  background-color: rgb(39, 30, 101);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 50px;
+  margin-bottom: 5px;
+  width: 80px;
+  color: white;
 }

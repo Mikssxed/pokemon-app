@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import pokeball from "../assets/white-pokeball.png";
 
 import classes from "./Team.module.css";

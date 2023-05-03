@@ -1,0 +1,49 @@
+.container {
+  width: 600px;
+  background-color: rgba(0, 0, 0, 0.3);
+  height: 100vh;
+  margin-top: -100px;
+}
+.header {
+  background-color: goldenrod;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 30px;
+  align-items: center;
+}
+.holder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
+}
+h1 {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 32px;
+}
+.levelBlock {
+  background-color: rgba(0, 0, 0, 0.644);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 30px;
+  width: 100px;
+  height: 40px;
+  color: white;
+}
+span {
+  font-weight: 500;
+  font-size: 24px;
+}
+.typeContainer,
+.natureContainer {
+  height: 50px;
+  display: flex;
+  column-gap: 10px;
+  padding: 5px 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  align-items: center;
+}

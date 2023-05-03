@@ -1,0 +1,25 @@
+.container {
+  display: flex;
+  padding: 0 30px;
+  background-color: rgb(39, 30, 101);
+  height: 60px;
+  border-radius: 0 0 15px 0;
+  justify-content: space-between;
+  align-items: center;
+  width: fit-content;
+  column-gap: 50px;
+  margin-bottom: 40px;
+}
+.link {
+  text-decoration: none;
+  color: grey;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  font-size: 21px;
+  font-weight: 500;
+}
+.active {
+  border-bottom: 2px solid gold;
+  color: white;
+}

@@ -9,4 +9,11 @@ body {
     Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   background: linear-gradient(45deg, rgb(109, 69, 255) 5%, rgb(145, 115, 254));
   height: 100vh;
+  overflow: hidden;
+}
+#root {
+  height: 100%;
+}
+main {
+  height: 100%;
 }

@@ -1,0 +1,10 @@
+.type {
+  padding: 5px 10px;
+  background-color: rgb(158, 158, 158);
+  width: 100px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}

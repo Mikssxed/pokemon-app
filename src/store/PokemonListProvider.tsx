@@ -1,7 +1,7 @@
-import { FC, ReactNode, useReducer } from "react";
+import { FC, ReactNode, useEffect, useReducer } from "react";
 import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
-import { Pokemon, PokemonTeam } from "../utils/types/types";
+import { Pokemon, PokemonData, PokemonTeam } from "../utils/types/types";
 
 interface manageState {
   isSelected: boolean;
@@ -126,6 +126,35 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     ],
   });
 
+  useEffect(() => {
+    if (state.selectedPokemon) {
+      axios
+        .all<{ data: PokemonData }>([
+          axios.get(
+            `https://pokeapi.co/api/v2/pokemon/${state.selectedPokemon.toLowerCase()}`
+          ),
+          axios.get(
+            `https://pokeapi.co/api/v2/pokemon-species/${state.selectedPokemon.toLowerCase()}`
+          ),
+        ])
+        .then(
+          axios.spread((...responses) => {
+            const basicData = responses[0].data;
+            const speciesData = responses[1].data;
+            const pokemon: PokemonData = {
+              name: basicData.name,
+              id: basicData.id,
+            };
+
+            console.log(basicData);
+          })
+        )
+        .catch((error) => {
+          console.error("Error fetching Pokemon:", error);
+        });
+    }
+  }, [state.selectedPokemon]);
+
   const loadPokemonHandler = () => {
     axios
       .get<{ results: Pokemon[] }>(
@@ -192,6 +221,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     selectPokemon: selectPokemon,
     isSelected: state.isSelected,
     removePokemon: removePokemonHandler,
+    // loadPokemonData: loadPokemonData,
   };
 
   return (

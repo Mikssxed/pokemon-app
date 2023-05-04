@@ -15,3 +15,8 @@ export interface PokemonTeam {
   url: string;
   id: number;
 }
+export interface PokemonData {
+  name: string;
+  id: number;
+  
+}

@@ -31,7 +31,9 @@ const PokemonList: FC = () => {
 
   const fullList = listToFilter.map((pokemon, index) => (
     <li
-      onClick={() => selectPokemon(pokemon.name)}
+      onClick={() => {
+        selectPokemon(pokemon.name);
+      }}
       className={
         isActive === pokemon.name
           ? `${classes.listItem} ${classes.selected}`

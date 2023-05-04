@@ -15,8 +15,8 @@ const PokemonInfo = () => {
         <div className={classes.levelBlock}>Lv. 100</div>
       </div>
       <div className={classes.typeContainer}>
-        <PokemonType>Normal</PokemonType>
-        <PokemonType>Ice</PokemonType>
+        <PokemonType type="normal"></PokemonType>
+        <PokemonType type="ice"></PokemonType>
       </div>
       <div>Graph</div>
       <div></div>

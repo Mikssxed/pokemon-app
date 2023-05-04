@@ -11,6 +11,7 @@ interface PokemonListContext {
   selectPokemon: (string: string | null) => void;
   isSelected: boolean;
   removePokemon: (string: string | null) => void;
+  // loadPokemonData: (pokemon: string) => void;
 }
 
 const PokemonListContext = createContext<PokemonListContext>({
@@ -23,6 +24,7 @@ const PokemonListContext = createContext<PokemonListContext>({
   selectPokemon: (string) => {},
   isSelected: false,
   removePokemon: (string) => {},
+  // loadPokemonData: (pokomon: string) => {},
 });
 
 export default PokemonListContext;

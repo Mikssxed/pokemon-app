@@ -32,7 +32,10 @@ const PokemonList: FC = () => {
   const fullList = listToFilter.map((pokemon, index) => (
     <li
       onClick={() => {
-        selectPokemon(pokemon.name);
+        selectPokemon({
+          name: pokemon.name,
+          pokeId: +getNumberFromUrl(pokemon.url),
+        });
       }}
       className={
         isActive === pokemon.name

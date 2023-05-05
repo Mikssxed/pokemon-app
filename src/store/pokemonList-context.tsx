@@ -1,5 +1,10 @@
 import { createContext } from "react";
-import { Pokemon, PokemonTeam } from "../utils/types/types";
+import {
+  Pokemon,
+  PokemonData,
+  PokemonTeam,
+  selectedPokemon,
+} from "../utils/types/types";
 
 interface PokemonListContext {
   selectedPokemons: PokemonTeam[];
@@ -8,23 +13,23 @@ interface PokemonListContext {
   pokemonList: Pokemon[];
   isActive: string | null;
   getNumberFromUrl: (url: string) => string;
-  selectPokemon: (string: string | null) => void;
+  selectPokemon: ({}: selectedPokemon) => void;
   isSelected: boolean;
-  removePokemon: (string: string | null) => void;
-  // loadPokemonData: (pokemon: string) => void;
+  removePokemon: ({}: selectedPokemon) => void;
+  pokemonData: PokemonData;
 }
 
 const PokemonListContext = createContext<PokemonListContext>({
-  selectedPokemons: [{ name: "", url: "", id: 0 }],
+  selectedPokemons: [{ name: "", url: "", id: 0, pokeId: 0 }],
   addPokemon: () => {},
   loadPokemon: () => {},
   pokemonList: [],
   isActive: null,
   getNumberFromUrl: (url) => "",
-  selectPokemon: (string) => {},
+  selectPokemon: ({ name, pokeId }) => {},
   isSelected: false,
-  removePokemon: (string) => {},
-  // loadPokemonData: (pokomon: string) => {},
+  removePokemon: ({ name, pokeId }) => {},
+  pokemonData: { name: "", id: 0, types: [], description: "" },
 });
 
 export default PokemonListContext;

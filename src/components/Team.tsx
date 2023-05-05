@@ -10,7 +10,9 @@ const Team = () => {
 
   const pokemonTeam = selectedPokemons.map((pokemon, index) => (
     <TeamTile
-      onClick={() => removePokemon(pokemon.name)}
+      onClick={() =>
+        removePokemon({ name: pokemon.name, pokeId: pokemon.pokeId })
+      }
       pokemonData={pokemon}
       key={index}
     />

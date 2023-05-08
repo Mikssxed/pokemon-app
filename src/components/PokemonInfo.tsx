@@ -3,6 +3,7 @@ import pokeball from "../assets/pokeball.png";
 import PokemonType from "./PokemonType";
 import PokemonListContext from "../store/pokemonList-context";
 import { useContext } from "react";
+import PokemonGraph from "./PokemonGraph";
 
 const PokemonInfo = () => {
   const { pokemonData } = useContext(PokemonListContext);
@@ -36,7 +37,9 @@ const PokemonInfo = () => {
         {pokemonData.name && <div className={classes.levelBlock}>Lv. 100</div>}
       </div>
       <div className={classes.typeContainer}>{pokemonName && pokemonTypes}</div>
-      <div>Graph</div>
+      <div>
+        <PokemonGraph />
+      </div>
       <div className={classes.description}>{pokemonDescription}</div>
     </div>
   );

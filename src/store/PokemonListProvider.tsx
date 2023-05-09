@@ -5,6 +5,7 @@ import {
   Pokemon,
   PokemonData,
   PokemonDataAPI,
+  PokemonStats,
   PokemonTeam,
   selectedPokemon,
 } from "../utils/types/types";
@@ -15,6 +16,7 @@ interface manageState {
   pokemonList: Pokemon[];
   pokemonTeam: PokemonTeam[];
   pokemonData: PokemonData;
+  firstClick: boolean;
 }
 
 type Load = {
@@ -28,7 +30,7 @@ type Add = {
 };
 
 type Select = {
-  type: "SELECT";
+  type: "SELECT" | "FIRST";
   payload: boolean;
 };
 
@@ -122,8 +124,11 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
           id: action.payload.id,
           types: action.payload.types,
           description: action.payload.description,
+          stats: action.payload.stats,
         },
       };
+    case "FIRST":
+      return { ...state, firstClick: action.payload };
     default:
       throw new Error("should not appear");
   }
@@ -147,11 +152,29 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       { id: 5, name: "", url: "", pokeId: 0 },
       { id: 6, name: "", url: "", pokeId: 0 },
     ],
-    pokemonData: { name: "", id: 0, types: [""], description: "" },
+    pokemonData: {
+      name: "",
+      id: 0,
+      types: [""],
+      description: "",
+      stats: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        spAttack: 0,
+        spDefense: 0,
+        speed: 0,
+      },
+    },
+    firstClick: true,
   });
 
   useEffect(() => {
     if (state.selectedPokemon.name) {
+      if (!state.firstClick) {
+        dispatch({ type: "SELECT", payload: false });
+      }
+      dispatch({ type: "FIRST", payload: false });
       axios
         .all<{ data: PokemonDataAPI }>([
           axios.get(
@@ -173,9 +196,19 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
               id: basicData.id,
               types: basicData.types.map((i) => i.type.name),
               description: speciesData.flavor_text_entries[enIndex].flavor_text,
+              stats: {
+                hp: basicData.stats[0].base_stat,
+                attack: basicData.stats[1].base_stat,
+                defense: basicData.stats[2].base_stat,
+                spAttack: basicData.stats[3].base_stat,
+                spDefense: basicData.stats[4].base_stat,
+                speed: basicData.stats[5].base_stat,
+              },
             };
+            setTimeout(() => {
+              dispatch({ type: "SELECT", payload: true });
+            }, 500);
             dispatch({ type: "DATA", payload: pokemon });
-            console.log(pokemon);
           })
         )
         .catch((error) => {
@@ -207,6 +240,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       (p: PokemonTeam) => !p.name
     );
     if (index !== -1) {
+      dispatch({ type: "FIRST", payload: true });
       dispatch({ type: "ADD", payload: index });
       dispatch({ type: "SELECT", payload: false });
     } else {

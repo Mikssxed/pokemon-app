@@ -8,6 +8,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { memo } from "react";
+import { PokemonData } from "../utils/types/types";
 
 ChartJS.register(
   RadialLinearScale,
@@ -18,30 +20,45 @@ ChartJS.register(
   Legend
 );
 
-const PokemonGraph = () => {
+interface PokemonGraphProps {
+  pokemonData: PokemonData;
+}
+
+const PokemonGraph = memo(({ pokemonData }: PokemonGraphProps) => {
+  const { hp, attack, defense, spAttack, spDefense, speed } = pokemonData.stats;
+
   const data = {
     labels: [
-      ["HP", 255],
-      ["Attack", 255],
-      ["Defense", 255],
-      ["Sp. Attack", 255],
-      ["Sp. Defense", 255],
-      ["Speed", 255],
+      ["HP", hp],
+      ["Attack", attack],
+      ["Defense", defense],
+      ["Sp. Attack", spAttack],
+      ["Sp. Defense", spDefense],
+      ["Speed", speed],
     ],
     datasets: [
       {
-        data: [80, 100, 120, 90, 80, 110],
-        backgroundColor: "rgba(27, 118, 255, 0.6)",
+        data: [hp, attack, defense, spAttack, spDefense, speed],
+        backgroundColor: "rgba(27, 118, 255, 0.8)",
         borderWidth: 0,
+      },
+      {
+        data: [300, 300, 300, 300, 300, 300],
+        backgroundColor: "rgba(19, 77, 165, 0.5)",
+        borderColor: "white",
+        borderWidth: 5,
       },
     ],
   };
 
   ChartJS.defaults.color = "white";
+  ChartJS.defaults.elements.point.pointStyle = false;
 
   const options = {
     backgroundColor: "rgba(0, 0, 0, 0.5)",
+
     plugins: {
+      tooltip: { enabled: false },
       title: {
         display: false,
         text: "Chart.js Radar Chart",
@@ -76,6 +93,6 @@ const PokemonGraph = () => {
     },
   };
   return <Radar data={data} options={options} />;
-};
+});
 
 export default PokemonGraph;

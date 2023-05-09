@@ -3,6 +3,11 @@
   background-color: rgba(0, 0, 0, 0.3);
   height: 100vh;
   margin-top: -100px;
+  transition: all ease-in-out 0.3s;
+  transform: translateX(100%);
+}
+.active {
+  transform: translateX(0%);
 }
 .header {
   background-color: goldenrod;
@@ -50,4 +55,7 @@ span {
   background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
   color: white;
+  height: 90px;
+  display: flex;
+  align-items: center;
 }

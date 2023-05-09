@@ -29,7 +29,20 @@ const PokemonListContext = createContext<PokemonListContext>({
   selectPokemon: ({ name, pokeId }) => {},
   isSelected: false,
   removePokemon: ({ name, pokeId }) => {},
-  pokemonData: { name: "", id: 0, types: [], description: "" },
+  pokemonData: {
+    name: "",
+    id: 0,
+    types: [],
+    description: "",
+    stats: {
+      hp: 0,
+      attack: 0,
+      defense: 0,
+      spAttack: 0,
+      spDefense: 0,
+      speed: 0,
+    },
+  },
 });
 
 export default PokemonListContext;

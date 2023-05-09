@@ -6,7 +6,7 @@ import { useContext } from "react";
 import PokemonGraph from "./PokemonGraph";
 
 const PokemonInfo = () => {
-  const { pokemonData } = useContext(PokemonListContext);
+  const { pokemonData, isSelected } = useContext(PokemonListContext);
   const pokemonName =
     pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
 
@@ -24,7 +24,7 @@ const PokemonInfo = () => {
     .join("");
 
   return (
-    <div className={classes.container}>
+    <div className={`${classes.container} ${isSelected && classes.active}`}>
       <div className={classes.header}>
         <div className={classes.holder}>
           <img src={pokeball} height="50" />
@@ -38,7 +38,7 @@ const PokemonInfo = () => {
       </div>
       <div className={classes.typeContainer}>{pokemonName && pokemonTypes}</div>
       <div>
-        <PokemonGraph />
+        <PokemonGraph pokemonData={pokemonData} />
       </div>
       <div className={classes.description}>{pokemonDescription}</div>
     </div>

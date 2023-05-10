@@ -59,3 +59,30 @@ span {
   display: flex;
   align-items: center;
 }
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 30px;
+  padding-top: 40px;
+}
+.btn {
+  background-color: goldenrod;
+  border: 2px solid white;
+  border-radius: 15px;
+  padding: 15px 20px;
+  color: black;
+  font-weight: 700;
+  font-size: 24px;
+  width: 250px;
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.enabled {
+  opacity: 1;
+  cursor: pointer;
+}

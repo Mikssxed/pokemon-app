@@ -231,7 +231,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   const selectPokemon = (object: selectedPokemon) => {
-    dispatch({ type: "SELECT", payload: true });
+    dispatch({ type: "SELECT", payload: false });
     dispatch({ type: "SET", payload: object });
   };
 
@@ -242,7 +242,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     if (index !== -1) {
       dispatch({ type: "FIRST", payload: true });
       dispatch({ type: "ADD", payload: index });
-      dispatch({ type: "SELECT", payload: false });
     } else {
       console.log("Team is full");
     }
@@ -286,6 +285,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     isSelected: state.isSelected,
     removePokemon: removePokemonHandler,
     pokemonData: state.pokemonData,
+    pokemonTeam: state.pokemonTeam,
   };
 
   return (

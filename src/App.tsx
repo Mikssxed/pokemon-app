@@ -3,6 +3,7 @@ import CreateTeam from "./pages/CreateTeam";
 import RootLayout from "./pages/Root";
 import Home from "./pages/Home";
 import CreateTeamLayout from "./pages/CreateTeamLayout";
+import ManageTeam from "./pages/ManageTeam";
 
 const router = createBrowserRouter([
   {
@@ -11,9 +12,12 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       {
-        path: "createTeam",
+        path: "/",
         element: <CreateTeamLayout />,
-        children: [{ index: true, element: <CreateTeam /> }],
+        children: [
+          { path: "createTeam", element: <CreateTeam /> },
+          { path: "ManageTeam", element: <ManageTeam /> },
+        ],
       },
     ],
   },

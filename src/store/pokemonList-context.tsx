@@ -17,6 +17,7 @@ interface PokemonListContext {
   isSelected: boolean;
   removePokemon: ({}: selectedPokemon) => void;
   pokemonData: PokemonData;
+  pokemonTeam: PokemonTeam[];
 }
 
 const PokemonListContext = createContext<PokemonListContext>({
@@ -43,6 +44,14 @@ const PokemonListContext = createContext<PokemonListContext>({
       speed: 0,
     },
   },
+  pokemonTeam: [
+    { id: 1, name: "", url: "", pokeId: 0 },
+    { id: 2, name: "", url: "", pokeId: 0 },
+    { id: 3, name: "", url: "", pokeId: 0 },
+    { id: 4, name: "", url: "", pokeId: 0 },
+    { id: 5, name: "", url: "", pokeId: 0 },
+    { id: 6, name: "", url: "", pokeId: 0 },
+  ],
 });
 
 export default PokemonListContext;

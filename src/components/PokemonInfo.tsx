@@ -4,9 +4,11 @@ import PokemonType from "./PokemonType";
 import PokemonListContext from "../store/pokemonList-context";
 import { useContext } from "react";
 import PokemonGraph from "./PokemonGraph";
+import { Link } from "react-router-dom";
 
 const PokemonInfo = () => {
-  const { pokemonData, isSelected } = useContext(PokemonListContext);
+  const { pokemonData, isSelected, pokemonTeam } =
+    useContext(PokemonListContext);
   const pokemonName =
     pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
 
@@ -41,6 +43,14 @@ const PokemonInfo = () => {
         <PokemonGraph pokemonData={pokemonData} />
       </div>
       <div className={classes.description}>{pokemonDescription}</div>
+      <div className={classes.nav}>
+        <Link
+          to={pokemonTeam[0].name ? "/ManageTeam" : "#"}
+          className={`${classes.btn} ${pokemonTeam[0].name && classes.enabled}`}
+        >
+          Next
+        </Link>
+      </div>
     </div>
   );
 };

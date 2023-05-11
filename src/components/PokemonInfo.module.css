@@ -23,10 +23,11 @@
   justify-content: center;
   column-gap: 10px;
 }
-h1 {
+.pokeHeader {
   font-weight: 700;
-  font-size: 32px;
-  line-height: 32px;
+  font-size: 32px !important;
+  line-height: 32px !important;
+  margin: 0 !important;
 }
 .levelBlock {
   background-color: rgba(0, 0, 0, 0.644);

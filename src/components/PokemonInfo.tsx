@@ -31,7 +31,7 @@ const PokemonInfo = () => {
         <div className={classes.holder}>
           <img src={pokeball} height="50" />
           {pokemonData.name && (
-            <h1>
+            <h1 className={classes.pokeHeader}>
               <span>No. {pokemonData.id}</span> {pokemonName}
             </h1>
           )}

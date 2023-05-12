@@ -10,10 +10,16 @@ const TeamTile: FC<{ pokemonData: PokemonTeam; onClick: () => void }> = ({
   pokemonData: PokemonTeam;
   onClick: () => void;
 }) => {
-  const { getNumberFromUrl } = useContext(PokemonListContext);
+  const { getNumberFromUrl, isActive } = useContext(PokemonListContext);
+  console.log(isActive);
 
   return (
-    <div onClick={onClick} className={classes.tile}>
+    <div
+      onClick={onClick}
+      className={`${classes.tile} ${
+        isActive === pokemonData.name && isActive ? classes.active : ""
+      }`}
+    >
       {pokemonData.name && (
         <>
           <header>

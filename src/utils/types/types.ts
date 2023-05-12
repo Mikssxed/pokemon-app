@@ -15,6 +15,8 @@ export interface PokemonTeam {
   url: string;
   id: number;
   pokeId: number;
+  selected: boolean;
+  moves: { move: { name: string; url: string } }[];
 }
 export interface PokemonData {
   name: string;
@@ -22,6 +24,7 @@ export interface PokemonData {
   types: string[];
   description: string;
   stats: PokemonStats;
+  moves: { move: { name: string; url: string } }[];
 }
 export interface PokemonDataAPI {
   name: string;
@@ -29,6 +32,7 @@ export interface PokemonDataAPI {
   types: { type: { name: string } }[];
   flavor_text_entries: { flavor_text: string; language: { name: string } }[];
   stats: { base_stat: number }[];
+  moves: { move: { name: string; url: string } }[];
 }
 export interface selectedPokemon {
   name: string | null;

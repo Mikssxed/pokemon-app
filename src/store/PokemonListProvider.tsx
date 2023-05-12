@@ -68,9 +68,9 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
     case "ADD":
       return {
         ...state,
-        pokemonList: state.pokemonList.filter(
-          (p) => p.name !== state.selectedPokemon.name
-        ),
+        // pokemonList: state.pokemonList.filter(
+        //   (p) => p.name !== state.selectedPokemon.name
+        // ),
         pokemonTeam: state.pokemonTeam.map((p) => {
           if (p.id === action.payload + 1) {
             return {
@@ -80,6 +80,7 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
                 (pokemon) => pokemon.name === state.selectedPokemon.name
               )!.url,
               pokeId: state.selectedPokemon.pokeId,
+              moves: state.pokemonData.moves,
             };
           } else {
             return p;
@@ -105,16 +106,16 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
           .map((p, i) => {
             return { ...p, id: i + 1 };
           }),
-        pokemonList: [
-          ...state.pokemonList,
-          {
-            name: state.pokemonTeam[action.payload].name,
-            url: state.pokemonTeam[action.payload].url,
-          } as Pokemon,
-        ].sort(
-          (prev, now) =>
-            +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
-        ),
+        // pokemonList: [
+        //   ...state.pokemonList,
+        //   {
+        //     name: state.pokemonTeam[action.payload].name,
+        //     url: state.pokemonTeam[action.payload].url,
+        //   } as Pokemon,
+        // ].sort(
+        //   (prev, now) =>
+        //     +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
+        // ),
       };
     case "DATA":
       return {
@@ -125,6 +126,7 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
           types: action.payload.types,
           description: action.payload.description,
           stats: action.payload.stats,
+          moves: action.payload.moves,
         },
       };
     case "FIRST":
@@ -145,12 +147,12 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     selectedPokemon: { name: "", pokeId: 0 },
     pokemonList: [],
     pokemonTeam: [
-      { id: 1, name: "", url: "", pokeId: 0 },
-      { id: 2, name: "", url: "", pokeId: 0 },
-      { id: 3, name: "", url: "", pokeId: 0 },
-      { id: 4, name: "", url: "", pokeId: 0 },
-      { id: 5, name: "", url: "", pokeId: 0 },
-      { id: 6, name: "", url: "", pokeId: 0 },
+      { id: 1, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+      { id: 2, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+      { id: 3, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+      { id: 4, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+      { id: 5, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+      { id: 6, name: "", url: "", pokeId: 0, selected: false, moves: [] },
     ],
     pokemonData: {
       name: "",
@@ -165,6 +167,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         spDefense: 0,
         speed: 0,
       },
+      moves: [{ move: { name: "", url: "" } }],
     },
     firstClick: true,
   });
@@ -204,6 +207,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
                 spDefense: basicData.stats[4].base_stat,
                 speed: basicData.stats[5].base_stat,
               },
+              moves: [...basicData.moves],
             };
             setTimeout(() => {
               dispatch({ type: "SELECT", payload: true });

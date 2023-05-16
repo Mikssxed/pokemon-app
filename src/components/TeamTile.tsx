@@ -3,21 +3,26 @@ import classes from "./TeamTile.module.css";
 import { PokemonTeam } from "../utils/types/types";
 import PokemonListContext from "../store/pokemonList-context";
 
-const TeamTile: FC<{ pokemonData: PokemonTeam; onClick: () => void }> = ({
+const TeamTile: FC<{
+  pokemonData: PokemonTeam;
+  onClick: () => void;
+  active: boolean;
+}> = ({
   pokemonData,
   onClick,
+  active,
 }: {
   pokemonData: PokemonTeam;
   onClick: () => void;
+  active: boolean;
 }) => {
   const { getNumberFromUrl, isActive } = useContext(PokemonListContext);
-  console.log(isActive);
 
   return (
     <div
       onClick={onClick}
       className={`${classes.tile} ${
-        isActive === pokemonData.name && isActive ? classes.active : ""
+        isActive === pokemonData.name && active ? classes.active : ""
       }`}
     >
       {pokemonData.name && (

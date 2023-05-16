@@ -1,5 +1,6 @@
 import { createContext } from "react";
 import {
+  Moves,
   Pokemon,
   PokemonData,
   PokemonTeam,
@@ -7,7 +8,6 @@ import {
 } from "../utils/types/types";
 
 interface PokemonListContext {
-  selectedPokemons: PokemonTeam[];
   addPokemon: () => void;
   loadPokemon: () => void;
   pokemonList: Pokemon[];
@@ -18,10 +18,12 @@ interface PokemonListContext {
   removePokemon: ({}: selectedPokemon) => void;
   pokemonData: PokemonData;
   pokemonTeam: PokemonTeam[];
+  editPokemon: (id: number) => void;
+  // loadMoves: (name: string) => void;
+  moves: Moves[];
 }
 
 const PokemonListContext = createContext<PokemonListContext>({
-  selectedPokemons: [{ name: "", url: "", id: 0, pokeId: 0 }],
   addPokemon: () => {},
   loadPokemon: () => {},
   pokemonList: [],
@@ -43,15 +45,19 @@ const PokemonListContext = createContext<PokemonListContext>({
       spDefense: 0,
       speed: 0,
     },
+    moves: [],
   },
   pokemonTeam: [
-    { id: 1, name: "", url: "", pokeId: 0 },
-    { id: 2, name: "", url: "", pokeId: 0 },
-    { id: 3, name: "", url: "", pokeId: 0 },
-    { id: 4, name: "", url: "", pokeId: 0 },
-    { id: 5, name: "", url: "", pokeId: 0 },
-    { id: 6, name: "", url: "", pokeId: 0 },
+    { id: 1, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+    { id: 2, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+    { id: 3, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+    { id: 4, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+    { id: 5, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+    { id: 6, name: "", url: "", pokeId: 0, selected: false, moves: [] },
   ],
+  editPokemon: (id) => {},
+  // loadMoves: (name) => {},
+  moves: [{ type: "", name: "" }],
 });
 
 export default PokemonListContext;

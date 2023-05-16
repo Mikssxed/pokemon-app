@@ -2,6 +2,8 @@ import { FC, ReactNode, useEffect, useReducer } from "react";
 import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
 import {
+  Moves,
+  MovesData,
   Pokemon,
   PokemonData,
   PokemonDataAPI,
@@ -17,6 +19,7 @@ interface manageState {
   pokemonTeam: PokemonTeam[];
   pokemonData: PokemonData;
   firstClick: boolean;
+  moves: Moves[];
 }
 
 type Load = {
@@ -25,7 +28,7 @@ type Load = {
 };
 
 type Add = {
-  type: "ADD";
+  type: "ADD" | "EDIT";
   payload: number;
 };
 
@@ -49,7 +52,24 @@ type Data = {
   payload: PokemonData;
 };
 
-type manageAction = Select | Set | Load | Add | Remove | Data;
+type Move = {
+  type: "MOVES";
+  payload: Moves;
+};
+
+type Reset_Move = {
+  type: "RESET_MOVE";
+};
+
+type manageAction =
+  | Select
+  | Set
+  | Load
+  | Add
+  | Remove
+  | Data
+  | Move
+  | Reset_Move;
 
 const managePokemonReducer = (state: manageState, action: manageAction) => {
   switch (action.type) {
@@ -131,6 +151,17 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
       };
     case "FIRST":
       return { ...state, firstClick: action.payload };
+    case "EDIT":
+      return {
+        ...state,
+        pokemonTeam: state.pokemonTeam.map((i, index) => {
+          return { ...i, selected: action.payload === index ? true : false };
+        }),
+      };
+    case "MOVES":
+      return { ...state, moves: [...state.moves, action.payload] };
+    // case "RESET_MOVE":
+    //   return { ...state, move: { type: "" } };
     default:
       throw new Error("should not appear");
   }
@@ -170,7 +201,12 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       moves: [{ move: { name: "", url: "" } }],
     },
     firstClick: true,
+    moves: [{ type: "", name: "" }],
   });
+
+  // useEffect(() => {
+  //   dispatch({ type: "RESET_MOVE" });
+  // }, [state.selectedPokemon.name]);
 
   useEffect(() => {
     if (state.selectedPokemon.name) {
@@ -234,9 +270,41 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       });
   };
 
+  useEffect(() => {
+    for (let i = 1; i < 903; i++) {
+      axios
+        .get<MovesData>(`https://pokeapi.co/api/v2/move/${i}/`)
+        .then((res) => {
+          dispatch({
+            type: "MOVES",
+            payload: { type: res.data.type.name, name: res.data.name },
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching Move:", error);
+        });
+    }
+  }, []);
+
+  // const loadMoves = (name: string) => {
+  //   axios
+  //     .get<MovesData>(`https://pokeapi.co/api/v2/move/${name}/`)
+  //     .then((res) => {
+  //       dispatch({ type: "MOVES", payload: { type: res.data.type.name } });
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching Move:", error);
+  //     });
+  // };
+
   const selectPokemon = (object: selectedPokemon) => {
     dispatch({ type: "SELECT", payload: false });
     dispatch({ type: "SET", payload: object });
+    dispatch({ type: "EDIT", payload: 8 });
+  };
+
+  const editPokemon = (id: number) => {
+    dispatch({ type: "EDIT", payload: id });
   };
 
   const addPokemonHandler = () => {
@@ -279,7 +347,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   const pokemonContext = {
-    selectedPokemons: state.pokemonTeam,
     addPokemon: addPokemonHandler,
     loadPokemon: loadPokemonHandler,
     pokemonList: state.pokemonList,
@@ -290,6 +357,9 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     removePokemon: removePokemonHandler,
     pokemonData: state.pokemonData,
     pokemonTeam: state.pokemonTeam,
+    editPokemon: editPokemon,
+    // loadMoves: loadMoves,
+    moves: state.moves,
   };
 
   return (

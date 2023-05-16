@@ -1,4 +1,5 @@
 import Moves from "../components/Moves";
+import PokemonEdit from "../components/PokemonEdit";
 import Team from "../components/Team";
 import classes from "./ManageTeam.module.css";
 
@@ -7,6 +8,7 @@ const ManageTeam = () => {
     <div className={classes.teamContainer}>
       <Team selecting={false} />
       <Moves />
+      <PokemonEdit />
     </div>
   );
 };

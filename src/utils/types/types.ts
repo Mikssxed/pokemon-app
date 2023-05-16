@@ -46,3 +46,12 @@ export interface PokemonStats {
   spDefense: number;
   speed: number;
 }
+
+export interface MovesData {
+  type: { name: string };
+  name: string;
+}
+export interface Moves {
+  type: string;
+  name: string;
+}

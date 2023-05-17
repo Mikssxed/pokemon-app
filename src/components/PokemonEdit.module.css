@@ -56,8 +56,10 @@ span {
   background-color: rgba(0, 0, 0, 0.3);
   padding: 20px;
   color: white;
-  height: 90px;
   display: flex;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 .nav {
@@ -86,4 +88,32 @@ span {
 .enabled {
   opacity: 1;
   cursor: pointer;
+}
+.pokemonMoves {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  padding: 20px;
+}
+.moveStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+  padding: 20px;
+}
+.name {
+  grid-area: 1 / 1 / 2 / 3;
+}
+.type {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.stat {
+  display: flex;
+  align-items: center;
 }

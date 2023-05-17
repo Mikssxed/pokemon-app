@@ -20,6 +20,7 @@ interface manageState {
   pokemonData: PokemonData;
   firstClick: boolean;
   moves: Moves[];
+  selectedMove: string;
 }
 
 type Load = {
@@ -61,6 +62,11 @@ type Reset_Move = {
   type: "RESET_MOVE";
 };
 
+type Select_Move = {
+  type: "SELECT_MOVE";
+  payload: string;
+};
+
 type manageAction =
   | Select
   | Set
@@ -69,7 +75,8 @@ type manageAction =
   | Remove
   | Data
   | Move
-  | Reset_Move;
+  | Reset_Move
+  | Select_Move;
 
 const managePokemonReducer = (state: manageState, action: manageAction) => {
   switch (action.type) {
@@ -162,6 +169,11 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
       return { ...state, moves: [...state.moves, action.payload] };
     // case "RESET_MOVE":
     //   return { ...state, move: { type: "" } };
+    case "SELECT_MOVE":
+      return {
+        ...state,
+        selectedMove: action.payload,
+      };
     default:
       throw new Error("should not appear");
   }
@@ -201,7 +213,25 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       moves: [{ move: { name: "", url: "" } }],
     },
     firstClick: true,
-    moves: [{ type: "", name: "" }],
+    moves: [
+      {
+        type: "",
+        name: "",
+        accuracy: 100,
+        damage_class: "",
+        power: 100,
+        pp: 15,
+        priority: 0,
+        effect_entries: [
+          {
+            effect: "",
+            language: { name: "" },
+            short_effect: "",
+          },
+        ],
+      },
+    ],
+    selectedMove: "",
   });
 
   // useEffect(() => {
@@ -270,6 +300,11 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       });
   };
 
+  const selectMove = (name: string) => {
+    dispatch({ type: "SELECT_MOVE", payload: name });
+    console.log(state.selectedMove);
+  };
+
   useEffect(() => {
     for (let i = 1; i < 903; i++) {
       axios
@@ -277,7 +312,16 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         .then((res) => {
           dispatch({
             type: "MOVES",
-            payload: { type: res.data.type.name, name: res.data.name },
+            payload: {
+              type: res.data.type.name,
+              name: res.data.name,
+              accuracy: res.data.accuracy,
+              damage_class: res.data.damage_class.name,
+              power: res.data.power,
+              pp: res.data.pp,
+              priority: res.data.priority,
+              effect_entries: res.data.effect_entries,
+            },
           });
         })
         .catch((error) => {
@@ -360,6 +404,8 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     editPokemon: editPokemon,
     // loadMoves: loadMoves,
     moves: state.moves,
+    selectMove: selectMove,
+    selectedMove: state.selectedMove,
   };
 
   return (

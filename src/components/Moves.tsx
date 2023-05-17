@@ -4,11 +4,18 @@ import Move from "./Move";
 import classes from "./Moves.module.css";
 
 const Moves = () => {
-  const { pokemonData, isActive, pokemonTeam } = useContext(PokemonListContext);
+  const { pokemonData, isActive, pokemonTeam, selectMove } =
+    useContext(PokemonListContext);
   const pokemonMoves = pokemonTeam
     .find((p) => p.name === isActive)
     ?.moves.map((i, index) => {
-      return <Move key={`move${index}`} moveName={i.move.name} />;
+      return (
+        <Move
+          key={`move${index}`}
+          moveName={i.move.name}
+          selectMove={() => selectMove(i.move.name)}
+        />
+      );
     });
 
   return <div className={classes.container}>{pokemonMoves}</div>;

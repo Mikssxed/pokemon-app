@@ -21,6 +21,8 @@ interface PokemonListContext {
   editPokemon: (id: number) => void;
   // loadMoves: (name: string) => void;
   moves: Moves[];
+  selectedMove: string;
+  selectMove: (name: string) => void;
 }
 
 const PokemonListContext = createContext<PokemonListContext>({
@@ -57,7 +59,26 @@ const PokemonListContext = createContext<PokemonListContext>({
   ],
   editPokemon: (id) => {},
   // loadMoves: (name) => {},
-  moves: [{ type: "", name: "" }],
+  moves: [
+    {
+      type: "",
+      name: "",
+      accuracy: 100,
+      damage_class: "",
+      power: 100,
+      pp: 15,
+      priority: 0,
+      effect_entries: [
+        {
+          effect: "",
+          language: { name: "" },
+          short_effect: "",
+        },
+      ],
+    },
+  ],
+  selectedMove: "",
+  selectMove: (name) => {},
 });
 
 export default PokemonListContext;

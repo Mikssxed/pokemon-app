@@ -50,8 +50,32 @@ export interface PokemonStats {
 export interface MovesData {
   type: { name: string };
   name: string;
+  accuracy: number;
+  damage_class: { name: string };
+  power: number;
+  pp: number;
+  priority: 0;
+  effect_entries:
+    | {
+        effect: string;
+        language: { name: string };
+        short_effect: string;
+      }[]
+    | [];
 }
 export interface Moves {
   type: string;
   name: string;
+  accuracy: number;
+  damage_class: string;
+  power: number;
+  pp: number;
+  priority: 0;
+  effect_entries:
+    | {
+        effect: string;
+        language: { name: string };
+        short_effect: string;
+      }[]
+    | [];
 }

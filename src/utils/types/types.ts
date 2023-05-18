@@ -17,6 +17,7 @@ export interface PokemonTeam {
   pokeId: number;
   selected: boolean;
   moves: { move: { name: string; url: string } }[];
+  selectedMoves: string[];
 }
 export interface PokemonData {
   name: string;

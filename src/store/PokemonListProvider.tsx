@@ -7,7 +7,6 @@ import {
   Pokemon,
   PokemonData,
   PokemonDataAPI,
-  PokemonStats,
   PokemonTeam,
   selectedPokemon,
 } from "../utils/types/types";
@@ -108,6 +107,8 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
               )!.url,
               pokeId: state.selectedPokemon.pokeId,
               moves: state.pokemonData.moves,
+              selectedMoves: ["empty", "empty", "empty", "empty"],
+              selected: true,
             };
           } else {
             return p;
@@ -124,6 +125,10 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
                 ...p,
                 name: "",
                 url: "",
+                pokeId: 0,
+                moves: [],
+                selectedMoves: ["empty", "empty", "empty", "empty"],
+                selected: false,
               };
             } else {
               return p;
@@ -190,12 +195,60 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     selectedPokemon: { name: "", pokeId: 0 },
     pokemonList: [],
     pokemonTeam: [
-      { id: 1, name: "", url: "", pokeId: 0, selected: false, moves: [] },
-      { id: 2, name: "", url: "", pokeId: 0, selected: false, moves: [] },
-      { id: 3, name: "", url: "", pokeId: 0, selected: false, moves: [] },
-      { id: 4, name: "", url: "", pokeId: 0, selected: false, moves: [] },
-      { id: 5, name: "", url: "", pokeId: 0, selected: false, moves: [] },
-      { id: 6, name: "", url: "", pokeId: 0, selected: false, moves: [] },
+      {
+        id: 1,
+        name: "",
+        url: "",
+        pokeId: 0,
+        selected: false,
+        moves: [],
+        selectedMoves: ["empty", "empty", "empty", "empty"],
+      },
+      {
+        id: 2,
+        name: "",
+        url: "",
+        pokeId: 0,
+        selected: false,
+        moves: [],
+        selectedMoves: ["empty", "empty", "empty", "empty"],
+      },
+      {
+        id: 3,
+        name: "",
+        url: "",
+        pokeId: 0,
+        selected: false,
+        moves: [],
+        selectedMoves: ["empty", "empty", "empty", "empty"],
+      },
+      {
+        id: 4,
+        name: "",
+        url: "",
+        pokeId: 0,
+        selected: false,
+        moves: [],
+        selectedMoves: ["empty", "empty", "empty", "empty"],
+      },
+      {
+        id: 5,
+        name: "",
+        url: "",
+        pokeId: 0,
+        selected: false,
+        moves: [],
+        selectedMoves: ["empty", "empty", "empty", "empty"],
+      },
+      {
+        id: 6,
+        name: "",
+        url: "",
+        pokeId: 0,
+        selected: false,
+        moves: [],
+        selectedMoves: ["empty", "empty", "empty", "empty"],
+      },
     ],
     pokemonData: {
       name: "",
@@ -302,7 +355,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
 
   const selectMove = (name: string) => {
     dispatch({ type: "SELECT_MOVE", payload: name });
-    console.log(state.selectedMove);
   };
 
   useEffect(() => {

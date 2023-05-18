@@ -107,3 +107,6 @@
   border-top-color: #f8c0b0;
   border-bottom-color: #789010;
 }
+.selected {
+  opacity: 0.3;
+}

@@ -6,13 +6,15 @@ const Move: FC<{ moveName: string; selectMove?: () => void }> = ({
   moveName,
   selectMove,
 }) => {
-  const { moves } = useContext(PokemonListContext);
+  const { moves, selectedMove } = useContext(PokemonListContext);
   const type = moves.find((i) => i.name === moveName)?.type;
 
   return (
     <div
       onClick={selectMove}
-      className={`${classes.type} ${type && classes[type.toLowerCase()]}`}
+      className={`${classes.type} ${type && classes[type.toLowerCase()]} ${
+        selectedMove === moveName && selectMove && classes.selected
+      }`}
     >
       {moveName}
     </div>

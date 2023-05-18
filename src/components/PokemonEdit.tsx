@@ -34,16 +34,16 @@ const PokemonEdit = () => {
 
   const move = moves.find((i) => i.name === selectedMove);
 
-  const moveDescription = move?.effect_entries[0].short_effect;
+  const selectedMoves = pokemonTeam
+    .find((p) => p.selected)
+    ?.selectedMoves.map((m, index) => (
+      <Move key={`${m}${index}`} moveName={m} />
+    ));
 
-  //   const pokemonDescription = pokemonData.description
-  //     .split("")
-  //     .map((i) => {
-  //       if (i === "\n" || i === "\f") {
-  //         return (i = " ");
-  //       } else return i;
-  //     })
-  //     .join("");
+  const moveDescription = move?.effect_entries[0]?.short_effect.replace(
+    " $effect_chance%",
+    ""
+  );
 
   return (
     <div className={`${classes.container} ${isSelected && classes.active}`}>
@@ -59,12 +59,7 @@ const PokemonEdit = () => {
         {pokemonData.name && <div className={classes.levelBlock}>Lv. 100</div>}
       </div>
       <div className={classes.typeContainer}>{pokemonName && pokemonTypes}</div>
-      <div className={classes.pokemonMoves}>
-        <Move moveName="empty" />
-        <Move moveName="empty" />
-        <Move moveName="empty" />
-        <Move moveName="empty" />
-      </div>
+      <div className={classes.pokemonMoves}>{selectedMoves}</div>
       <div className={classes.description}>
         <div className={classes.moveStats}>
           <div className={classes.name}>

@@ -6,12 +6,13 @@ import TeamTile from "./TeamTile";
 import PokemonListContext from "../store/pokemonList-context";
 
 const Team = ({ selecting = true }) => {
-  const { pokemonTeam, removePokemon, selectPokemon, editPokemon } =
+  const { pokemonTeam, removePokemon, selectPokemon, editPokemon, selectMove } =
     useContext(PokemonListContext);
 
   const team = pokemonTeam.map((pokemon, index) => (
     <TeamTile
       onClick={() => {
+        selectMove("");
         if (selecting) {
           removePokemon({ name: pokemon.name, pokeId: pokemon.pokeId });
           editPokemon(index);

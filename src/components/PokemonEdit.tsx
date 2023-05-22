@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import Move from "./Move";
 
 const PokemonEdit = () => {
-  const { pokemonData, isSelected, pokemonTeam, moves, selectedMove } =
+  const { pokemonData, isSelected, pokemonTeam, moves, selectedMove, addMove } =
     useContext(PokemonListContext);
   const pokemonName =
     pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
@@ -39,6 +39,10 @@ const PokemonEdit = () => {
     ?.selectedMoves.map((m, index) => (
       <Move key={`${m}${index}`} moveName={m} />
     ));
+
+  const emptyIndex = pokemonTeam
+    .find((i) => i.selected === true)
+    ?.selectedMoves.findIndex((i) => i === "empty");
 
   const moveDescription = move?.effect_entries[0]?.short_effect.replace(
     " $effect_chance%",
@@ -77,6 +81,15 @@ const PokemonEdit = () => {
         <p>{moveDescription}</p>
       </div>
       <div className={classes.nav}>
+        <div className={classes.moveManage}>
+          <button
+            onClick={() => addMove(emptyIndex)}
+            className={`${classes.btn} ${selectedMove && classes.enabled}`}
+          >
+            ADD
+          </button>
+          <button className={`${classes.btn} `}>REMOVE</button>
+        </div>
         <Link
           to={pokemonTeam[0].name ? "/Battle" : "#"}
           className={`${classes.btn} ${pokemonTeam[0].name && classes.enabled}`}

@@ -28,7 +28,7 @@ type Load = {
 };
 
 type Add = {
-  type: "ADD" | "EDIT";
+  type: "ADD" | "EDIT" | "ADD_MOVE";
   payload: number;
 };
 
@@ -178,6 +178,16 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
       return {
         ...state,
         selectedMove: action.payload,
+      };
+    case "ADD_MOVE":
+      return {
+        ...state,
+        pokemonTeam: state.pokemonTeam.map((i) => {
+          if (i.selected) {
+            i.selectedMoves[action.payload] = state.selectedMove;
+          }
+          return i;
+        }),
       };
     default:
       throw new Error("should not appear");
@@ -357,6 +367,15 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     dispatch({ type: "SELECT_MOVE", payload: name });
   };
 
+  const addMove = (number: number | undefined) => {
+    if (number === undefined || -1) {
+      console.log("full movesets");
+      return;
+    }
+    console.log(number);
+    dispatch({ type: "ADD_MOVE", payload: number });
+  };
+
   useEffect(() => {
     for (let i = 1; i < 903; i++) {
       axios
@@ -458,6 +477,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     moves: state.moves,
     selectMove: selectMove,
     selectedMove: state.selectedMove,
+    addMove: addMove,
   };
 
   return (

@@ -23,6 +23,7 @@ interface PokemonListContext {
   moves: Moves[];
   selectedMove: string;
   selectMove: (name: string) => void;
+  addMove: (number: number | undefined) => void;
 }
 
 const PokemonListContext = createContext<PokemonListContext>({
@@ -127,6 +128,7 @@ const PokemonListContext = createContext<PokemonListContext>({
   ],
   selectedMove: "",
   selectMove: (name) => {},
+  addMove: (number) => {},
 });
 
 export default PokemonListContext;

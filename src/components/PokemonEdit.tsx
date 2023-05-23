@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import PokemonListContext from "../store/pokemonList-context";
 import PokemonType from "./PokemonType";
 import classes from "./PokemonEdit.module.css";
@@ -7,10 +7,19 @@ import { Link } from "react-router-dom";
 import Move from "./Move";
 
 const PokemonEdit = () => {
-  const { pokemonData, isSelected, pokemonTeam, moves, selectedMove, addMove } =
-    useContext(PokemonListContext);
+  const {
+    pokemonData,
+    isSelected,
+    pokemonTeam,
+    moves,
+    selectedMove,
+    addMove,
+    removeMove,
+    selectMove,
+  } = useContext(PokemonListContext);
   const pokemonName =
     pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
+  const [chosedMove, setChosedMove] = useState("");
 
   const pokemonTypes = pokemonData.types.map((i, index) => (
     <PokemonType key={`${pokemonData.id}${index}`} type={i} />
@@ -34,11 +43,28 @@ const PokemonEdit = () => {
 
   const move = moves.find((i) => i.name === selectedMove);
 
+  // const choseMove = (name: string) => {
+  //   setChosedMove(name);
+
+  // };
+
   const selectedMoves = pokemonTeam
     .find((p) => p.selected)
-    ?.selectedMoves.map((m, index) => (
-      <Move key={`${m}${index}`} moveName={m} />
-    ));
+    ?.selectedMoves.map((m, index) => {
+      if (m === "empty") {
+        return (
+          <Move selected={m === chosedMove} key={`${m}${index}`} moveName={m} />
+        );
+      }
+      return (
+        <Move
+          selectMove={() => selectMove(m)}
+          selected={m === chosedMove}
+          key={`${m}${index}`}
+          moveName={m}
+        />
+      );
+    });
 
   const emptyIndex = pokemonTeam
     .find((i) => i.selected === true)
@@ -88,7 +114,16 @@ const PokemonEdit = () => {
           >
             ADD
           </button>
-          <button className={`${classes.btn} `}>REMOVE</button>
+          <button
+            onClick={() => removeMove(selectedMove)}
+            className={`${classes.btn} ${
+              pokemonTeam
+                .find((i) => i.selected)
+                ?.selectedMoves.find((i) => i !== "empty") && classes.enabled
+            }`}
+          >
+            REMOVE
+          </button>
         </div>
         <Link
           to={pokemonTeam[0].name ? "/Battle" : "#"}

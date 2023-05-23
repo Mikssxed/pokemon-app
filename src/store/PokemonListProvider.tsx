@@ -62,7 +62,7 @@ type Reset_Move = {
 };
 
 type Select_Move = {
-  type: "SELECT_MOVE";
+  type: "SELECT_MOVE" | "REMOVE_MOVE";
   payload: string;
 };
 
@@ -185,6 +185,19 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
         pokemonTeam: state.pokemonTeam.map((i) => {
           if (i.selected) {
             i.selectedMoves[action.payload] = state.selectedMove;
+          }
+          return i;
+        }),
+      };
+    case "REMOVE_MOVE":
+      return {
+        ...state,
+        pokemonTeam: state.pokemonTeam.map((i) => {
+          if (i.selected) {
+            const index = i.selectedMoves.findIndex(
+              (item) => item === action.payload
+            );
+            i.selectedMoves[index] = "empty";
           }
           return i;
         }),
@@ -368,12 +381,15 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   const addMove = (number: number | undefined) => {
-    if (number === undefined || -1) {
+    if (number === undefined || number === -1) {
       console.log("full movesets");
       return;
     }
-    console.log(number);
     dispatch({ type: "ADD_MOVE", payload: number });
+  };
+
+  const removeMove = (name: string) => {
+    dispatch({ type: "REMOVE_MOVE", payload: name });
   };
 
   useEffect(() => {
@@ -478,6 +494,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     selectMove: selectMove,
     selectedMove: state.selectedMove,
     addMove: addMove,
+    removeMove: removeMove,
   };
 
   return (

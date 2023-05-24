@@ -10,6 +10,7 @@ import {
   PokemonTeam,
   selectedPokemon,
 } from "../utils/types/types";
+import sortPokemonMoves from "../utils/helpers/sortPokemonMoves";
 
 interface manageState {
   isSelected: boolean;
@@ -185,6 +186,9 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
         pokemonTeam: state.pokemonTeam.map((i) => {
           if (i.selected) {
             i.selectedMoves[action.payload] = state.selectedMove;
+            i.moves = i.moves.filter(
+              (item) => item.move.name !== state.selectedMove
+            );
           }
           return i;
         }),
@@ -198,6 +202,14 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
               (item) => item === action.payload
             );
             i.selectedMoves[index] = "empty";
+
+            if (!i.moves.find((i) => i.move.name === state.selectedMove)) {
+              i.moves = [
+                ...i.moves,
+                { move: { name: state.selectedMove, url: "" } },
+              ];
+            }
+            i.moves.sort(sortPokemonMoves);
           }
           return i;
         }),

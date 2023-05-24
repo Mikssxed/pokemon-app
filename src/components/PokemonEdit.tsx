@@ -19,11 +19,15 @@ const PokemonEdit = () => {
   } = useContext(PokemonListContext);
   const pokemonName =
     pokemonData.name.charAt(0).toUpperCase() + pokemonData.name.slice(1);
-  const [chosedMove, setChosedMove] = useState("");
+  const [moveIndex, setMoveIndex] = useState(5);
 
   const pokemonTypes = pokemonData.types.map((i, index) => (
     <PokemonType key={`${pokemonData.id}${index}`} type={i} />
   ));
+
+  const selectPokeMove = (index: number) => {
+    setMoveIndex(index);
+  };
 
   const damageType = () => {
     if (move?.damage_class === "special") {
@@ -52,14 +56,11 @@ const PokemonEdit = () => {
     .find((p) => p.selected)
     ?.selectedMoves.map((m, index) => {
       if (m === "empty") {
-        return (
-          <Move selected={m === chosedMove} key={`${m}${index}`} moveName={m} />
-        );
+        return <Move key={`${m}${index}`} moveName={m} />;
       }
       return (
         <Move
           selectMove={() => selectMove(m)}
-          selected={m === chosedMove}
           key={`${m}${index}`}
           moveName={m}
         />
@@ -110,7 +111,12 @@ const PokemonEdit = () => {
         <div className={classes.moveManage}>
           <button
             onClick={() => addMove(emptyIndex)}
-            className={`${classes.btn} ${selectedMove && classes.enabled}`}
+            className={`${classes.btn} ${
+              pokemonTeam
+                .find((p) => p.selected)
+                ?.moves.find((i) => i.move.name === selectedMove) &&
+              classes.enabled
+            }`}
           >
             ADD
           </button>
@@ -119,7 +125,8 @@ const PokemonEdit = () => {
             className={`${classes.btn} ${
               pokemonTeam
                 .find((i) => i.selected)
-                ?.selectedMoves.find((i) => i !== "empty") && classes.enabled
+                ?.selectedMoves.find((i) => i === selectedMove) &&
+              classes.enabled
             }`}
           >
             REMOVE

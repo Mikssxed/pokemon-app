@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import PokemonListContext from "../store/pokemonList-context";
+import sortPokemonMoves from "../utils/helpers/sortPokemonMoves";
 import Loading from "./Loading";
 import Move from "./Move";
 import classes from "./Moves.module.css";
@@ -18,7 +19,8 @@ const Moves = () => {
 
   const pokemonMoves = pokemonTeam
     .find((p) => p.name === isActive)
-    ?.moves.map((i, index) => {
+    ?.moves.sort(sortPokemonMoves)
+    .map((i, index) => {
       return (
         <Move
           key={`move${index}`}

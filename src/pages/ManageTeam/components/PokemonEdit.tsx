@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
-import PokemonListContext from "../store/pokemonList-context";
-import PokemonType from "./PokemonType";
+import PokemonListContext from "../../../store/pokemonList-context";
+import PokemonType from "../../../components/PokemonType";
 import classes from "./PokemonEdit.module.css";
-import pokeball from "../assets/pokeball.png";
+import pokeball from "../../../assets/pokeball.png";
 import { Link } from "react-router-dom";
-import Move from "./Move";
+import Move from "../../../components/Move";
 
 const PokemonEdit = () => {
   const {

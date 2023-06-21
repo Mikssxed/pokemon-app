@@ -1,7 +1,7 @@
 import classes from "./PokemonInfo.module.css";
-import pokeball from "../assets/pokeball.png";
-import PokemonType from "./PokemonType";
-import PokemonListContext from "../store/pokemonList-context";
+import pokeball from "../../../assets/pokeball.png";
+import PokemonType from "../../../components/PokemonType";
+import PokemonListContext from "../../../store/pokemonList-context";
 import { useContext } from "react";
 import PokemonGraph from "./PokemonGraph";
 import { Link } from "react-router-dom";

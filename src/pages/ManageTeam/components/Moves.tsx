@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import PokemonListContext from "../store/pokemonList-context";
-import sortPokemonMoves from "../utils/helpers/sortPokemonMoves";
-import Loading from "./Loading";
-import Move from "./Move";
+import PokemonListContext from "../../../store/pokemonList-context";
+import sortPokemonMoves from "../../../utils/helpers/sortPokemonMoves";
+import Loading from "../../../components/Loading";
+import Move from "../../../components/Move";
 import classes from "./Moves.module.css";
 
 const Moves = () => {

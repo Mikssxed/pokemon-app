@@ -9,7 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { memo } from "react";
-import { PokemonData } from "../utils/types/types";
+import { PokemonData } from "../../../utils/types/types";
 
 ChartJS.register(
   RadialLinearScale,

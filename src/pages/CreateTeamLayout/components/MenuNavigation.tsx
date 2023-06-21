@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import classes from "./MenuNavigation.module.css";
 import { MouseEvent, MouseEventHandler, useContext } from "react";
-import PokemonListContext from "../store/pokemonList-context";
+import PokemonListContext from "../../../store/pokemonList-context";
 
 const MenuNavigation = () => {
   const { pokemonTeam } = useContext(PokemonListContext);

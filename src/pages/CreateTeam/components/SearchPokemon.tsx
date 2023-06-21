@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classes from "./SearchPokemon.module.css";
-import { AttributesType } from "../utils/types/types";
+import { AttributesType } from "../../../utils/types/types";
 
 const SearchPokemon: FC<AttributesType> = ({
   input,

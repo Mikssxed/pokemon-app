@@ -1,6 +1,6 @@
-import PokemonInfo from "../components/PokemonInfo";
-import PokemonList from "../components/PokemonList";
-import Team from "../components/Team";
+import PokemonInfo from "./components/PokemonInfo";
+import PokemonList from "./components/PokemonList";
+import Team from "../../components/Team";
 
 import classes from "./CreateTeam.module.css";
 

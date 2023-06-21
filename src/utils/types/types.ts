@@ -18,6 +18,7 @@ export interface PokemonTeam {
   selected: boolean;
   moves: { move: { name: string; url: string } }[];
   selectedMoves: string[];
+  sprites: { back_default: string; front_default: string };
 }
 export interface PokemonData {
   name: string;
@@ -26,6 +27,7 @@ export interface PokemonData {
   description: string;
   stats: PokemonStats;
   moves: { move: { name: string; url: string } }[];
+  sprites: { back_default: string; front_default: string };
 }
 export interface PokemonDataAPI {
   name: string;
@@ -34,6 +36,7 @@ export interface PokemonDataAPI {
   flavor_text_entries: { flavor_text: string; language: { name: string } }[];
   stats: { base_stat: number }[];
   moves: { move: { name: string; url: string } }[];
+  sprites: { back_default: string; front_default: string };
 }
 export interface selectedPokemon {
   name: string | null;

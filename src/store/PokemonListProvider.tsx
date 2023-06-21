@@ -2,7 +2,6 @@ import { FC, ReactNode, useEffect, useReducer } from "react";
 import PokemonListContext from "./pokemonList-context";
 import axios from "axios";
 import {
-  Moves,
   MovesData,
   Pokemon,
   PokemonData,
@@ -11,72 +10,7 @@ import {
   selectedPokemon,
 } from "../utils/types/types";
 import sortPokemonMoves from "../utils/helpers/sortPokemonMoves";
-
-interface manageState {
-  isSelected: boolean;
-  selectedPokemon: selectedPokemon;
-  pokemonList: Pokemon[];
-  pokemonTeam: PokemonTeam[];
-  pokemonData: PokemonData;
-  firstClick: boolean;
-  moves: Moves[];
-  selectedMove: string;
-}
-
-type Load = {
-  type: "LOAD";
-  payload: Pokemon[];
-};
-
-type Add = {
-  type: "ADD" | "EDIT" | "ADD_MOVE";
-  payload: number;
-};
-
-type Select = {
-  type: "SELECT" | "FIRST";
-  payload: boolean;
-};
-
-type Set = {
-  type: "SET";
-  payload: selectedPokemon;
-};
-
-type Remove = {
-  type: "REMOVE";
-  payload: number;
-};
-
-type Data = {
-  type: "DATA";
-  payload: PokemonData;
-};
-
-type Move = {
-  type: "MOVES";
-  payload: Moves;
-};
-
-type Reset_Move = {
-  type: "RESET_MOVE";
-};
-
-type Select_Move = {
-  type: "SELECT_MOVE" | "REMOVE_MOVE";
-  payload: string;
-};
-
-type manageAction =
-  | Select
-  | Set
-  | Load
-  | Add
-  | Remove
-  | Data
-  | Move
-  | Reset_Move
-  | Select_Move;
+import { manageAction, manageState } from "./pokemonList.types";
 
 const managePokemonReducer = (state: manageState, action: manageAction) => {
   switch (action.type) {
@@ -95,9 +29,6 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
     case "ADD":
       return {
         ...state,
-        // pokemonList: state.pokemonList.filter(
-        //   (p) => p.name !== state.selectedPokemon.name
-        // ),
         pokemonTeam: state.pokemonTeam.map((p) => {
           if (p.id === action.payload + 1) {
             return {
@@ -110,6 +41,7 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
               moves: state.pokemonData.moves,
               selectedMoves: ["empty", "empty", "empty", "empty"],
               selected: true,
+              sprites: state.pokemonData.sprites,
             };
           } else {
             return p;
@@ -139,16 +71,6 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
           .map((p, i) => {
             return { ...p, id: i + 1 };
           }),
-        // pokemonList: [
-        //   ...state.pokemonList,
-        //   {
-        //     name: state.pokemonTeam[action.payload].name,
-        //     url: state.pokemonTeam[action.payload].url,
-        //   } as Pokemon,
-        // ].sort(
-        //   (prev, now) =>
-        //     +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
-        // ),
       };
     case "DATA":
       return {
@@ -160,6 +82,7 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
           description: action.payload.description,
           stats: action.payload.stats,
           moves: action.payload.moves,
+          sprites: action.payload.sprites,
         },
       };
     case "FIRST":
@@ -173,8 +96,6 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
       };
     case "MOVES":
       return { ...state, moves: [...state.moves, action.payload] };
-    // case "RESET_MOVE":
-    //   return { ...state, move: { type: "" } };
     case "SELECT_MOVE":
       return {
         ...state,
@@ -238,6 +159,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         selected: false,
         moves: [],
         selectedMoves: ["empty", "empty", "empty", "empty"],
+        sprites: { back_default: "", front_default: "" },
       },
       {
         id: 2,
@@ -247,6 +169,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         selected: false,
         moves: [],
         selectedMoves: ["empty", "empty", "empty", "empty"],
+        sprites: { back_default: "", front_default: "" },
       },
       {
         id: 3,
@@ -256,6 +179,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         selected: false,
         moves: [],
         selectedMoves: ["empty", "empty", "empty", "empty"],
+        sprites: { back_default: "", front_default: "" },
       },
       {
         id: 4,
@@ -265,6 +189,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         selected: false,
         moves: [],
         selectedMoves: ["empty", "empty", "empty", "empty"],
+        sprites: { back_default: "", front_default: "" },
       },
       {
         id: 5,
@@ -274,6 +199,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         selected: false,
         moves: [],
         selectedMoves: ["empty", "empty", "empty", "empty"],
+        sprites: { back_default: "", front_default: "" },
       },
       {
         id: 6,
@@ -283,6 +209,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         selected: false,
         moves: [],
         selectedMoves: ["empty", "empty", "empty", "empty"],
+        sprites: { back_default: "", front_default: "" },
       },
     ],
     pokemonData: {
@@ -299,6 +226,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         speed: 0,
       },
       moves: [{ move: { name: "", url: "" } }],
+      sprites: { back_default: "", front_default: "" },
     },
     firstClick: true,
     moves: [
@@ -321,10 +249,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     ],
     selectedMove: "",
   });
-
-  // useEffect(() => {
-  //   dispatch({ type: "RESET_MOVE" });
-  // }, [state.selectedPokemon.name]);
 
   useEffect(() => {
     if (state.selectedPokemon.name) {
@@ -362,6 +286,10 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
                 speed: basicData.stats[5].base_stat,
               },
               moves: [...basicData.moves],
+              sprites: {
+                back_default: basicData.sprites.back_default,
+                front_default: basicData.sprites.front_default,
+              },
             };
             setTimeout(() => {
               dispatch({ type: "SELECT", payload: true });
@@ -429,17 +357,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     }
   }, []);
 
-  // const loadMoves = (name: string) => {
-  //   axios
-  //     .get<MovesData>(`https://pokeapi.co/api/v2/move/${name}/`)
-  //     .then((res) => {
-  //       dispatch({ type: "MOVES", payload: { type: res.data.type.name } });
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching Move:", error);
-  //     });
-  // };
-
   const selectPokemon = (object: selectedPokemon) => {
     dispatch({ type: "SELECT", payload: false });
     dispatch({ type: "SET", payload: object });
@@ -462,12 +379,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     }
   };
 
-  // const sortPokemonList = (list: Pokemon[]) => {
-  //   return list.sort(
-  //     (prev, now) => +getNumberFromUrl(prev.url) - +getNumberFromUrl(now.url)
-  //   );
-  // };
-
   const removePokemonHandler = (object: selectedPokemon) => {
     selectPokemon(object);
     console.log(object);
@@ -477,16 +388,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     );
 
     dispatch({ type: "REMOVE", payload: removedPokemon });
-
-    // setPokemonList(
-    //   sortPokemonList([
-    //     ...pokemonList,
-    //     {
-    //       name: removedPokemonData!.name,
-    //       url: removedPokemonData!.url,
-    //     } as Pokemon,
-    //   ])
-    // );
   };
 
   const pokemonContext = {
@@ -501,7 +402,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
     pokemonData: state.pokemonData,
     pokemonTeam: state.pokemonTeam,
     editPokemon: editPokemon,
-    // loadMoves: loadMoves,
     moves: state.moves,
     selectMove: selectMove,
     selectedMove: state.selectedMove,

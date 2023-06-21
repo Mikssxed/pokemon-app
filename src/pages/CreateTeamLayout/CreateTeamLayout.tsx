@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import MenuNavigation from "../components/MenuNavigation";
+import MenuNavigation from "./components/MenuNavigation";
 
 const CreateTeamLayout = () => {
   return (

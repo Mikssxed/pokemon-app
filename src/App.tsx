@@ -1,9 +1,10 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import CreateTeam from "./pages/CreateTeam";
+import CreateTeam from "./pages/CreateTeam/CreateTeam";
 import RootLayout from "./pages/Root";
-import Home from "./pages/Home";
-import CreateTeamLayout from "./pages/CreateTeamLayout";
-import ManageTeam from "./pages/ManageTeam";
+import Home from "./pages/Home/Home";
+import CreateTeamLayout from "./pages/CreateTeamLayout/CreateTeamLayout";
+import ManageTeam from "./pages/ManageTeam/ManageTeam";
+import Battle from "./pages/Battle/Batte";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
           { path: "ManageTeam", element: <ManageTeam /> },
         ],
       },
+      { path: "/Battle", element: <Battle /> },
     ],
   },
 ]);

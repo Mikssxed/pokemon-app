@@ -1,6 +1,6 @@
-import Moves from "../components/Moves";
-import PokemonEdit from "../components/PokemonEdit";
-import Team from "../components/Team";
+import Moves from "./components/Moves";
+import PokemonEdit from "./components/PokemonEdit";
+import Team from "../../components/Team";
 import classes from "./ManageTeam.module.css";
 
 const ManageTeam = () => {

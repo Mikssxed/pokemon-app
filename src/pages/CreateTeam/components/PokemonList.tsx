@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useContext, useEffect, useState } from "react";
 import classes from "./PokemonList.module.css";
 import SearchPokemon from "./SearchPokemon";
-import PokemonListContext from "../store/pokemonList-context";
+import PokemonListContext from "../../../store/pokemonList-context";
 
 const PokemonList: FC = () => {
   const [searchPokemon, setSearchPokemon] = useState<string>("");

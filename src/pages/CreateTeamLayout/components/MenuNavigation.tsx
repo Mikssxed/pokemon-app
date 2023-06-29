@@ -30,14 +30,6 @@ const MenuNavigation = () => {
       >
         Manage Team
       </NavLink>
-      <NavLink
-        className={({ isActive }) =>
-          !isActive ? classes.link : `${classes.link} ${classes.active}`
-        }
-        to="/Battle"
-      >
-        Battle
-      </NavLink>
     </div>
   );
 };

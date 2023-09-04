@@ -270,7 +270,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
 
   const addMove = (number: number | undefined) => {
     if (number === undefined || number === -1) {
-      console.log("full movesets");
       return;
     }
     dispatch({ type: "ADD_MOVE", payload: number });
@@ -281,7 +280,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
   };
 
   useEffect(() => {
-    for (let i = 1; i < 903; i++) {
+    for (let i = 1; i < 901; i++) {
       axios
         .get<MovesData>(`https://pokeapi.co/api/v2/move/${i}/`)
         .then((res) => {

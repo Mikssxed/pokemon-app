@@ -1,13 +1,14 @@
-import { useContext } from "react";
-import PokemonListContext from "../../store/pokemonList-context";
-import PokemonSpriteBack from "./components/PokemonSpriteBack";
+import ActionBar from "./components/ActionBar";
+import styles from "./Battle.module.css";
+import MyArea from "./components/MyArea";
 
 const Battle = () => {
-  const { pokemonTeam } = useContext(PokemonListContext);
-
   return (
-    <div>
-      <PokemonSpriteBack url={pokemonTeam[0].sprites.back_default} />
+    <div className={styles.battlePage}>
+      <div className={styles.fightContainer}>
+        <MyArea />
+      </div>
+      <ActionBar />
     </div>
   );
 };

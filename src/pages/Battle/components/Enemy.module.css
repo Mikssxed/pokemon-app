@@ -1,0 +1,11 @@
+.container {
+  height: 50%;
+  display: flex;
+  column-gap: 50px;
+}
+
+.trainerStats {
+  background-color: white;
+  border-radius: 25px;
+  display: flex;
+}

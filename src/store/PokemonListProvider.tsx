@@ -42,6 +42,7 @@ const managePokemonReducer = (state: manageState, action: manageAction) => {
               selectedMoves: ["empty", "empty", "empty", "empty"],
               selected: true,
               sprites: state.pokemonData.sprites,
+              stats: state.pokemonData.stats,
             };
           } else {
             return p;
@@ -159,6 +160,15 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
       moves: [],
       selectedMoves: ["empty", "empty", "empty", "empty"],
       sprites: { back_default: "", front_default: "" },
+      stats: {
+        hp: 0,
+        attack: 0,
+        defense: 0,
+        spAttack: 0,
+        spDefense: 0,
+        speed: 0,
+      },
+      active: false,
     })),
     pokemonData: {
       name: "",
@@ -328,7 +338,6 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
 
   const removePokemonHandler = (object: selectedPokemon) => {
     selectPokemon(object);
-    console.log(object);
 
     const removedPokemon: number = state.pokemonTeam.findIndex(
       (p) => p.name === object.name

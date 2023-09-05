@@ -19,6 +19,8 @@ export interface PokemonTeam {
   moves: { move: { name: string; url: string } }[];
   selectedMoves: string[];
   sprites: { back_default: string; front_default: string };
+  stats: PokemonStats;
+  active: boolean;
 }
 export interface PokemonData {
   name: string;

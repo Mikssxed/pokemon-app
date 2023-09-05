@@ -1,15 +1,24 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import styles from "./MyArea.module.css";
-import PokemonSpriteBack from "./PokemonSpriteBack";
+import PokemonSprite from "./PokemonSprite";
 import PokemonListContext from "../../../store/pokemonList-context";
+import TrainerStats from "./TrainerStats";
+import { PokemonTeam } from "../../../utils/types/types";
 
 const MyArea = () => {
   const { pokemonTeam } = useContext(PokemonListContext);
-  console.log(pokemonTeam);
+
+  useEffect(() => {
+    pokemonTeam[0].active = true;
+  }, []);
+
   return (
     <div className={styles.container}>
-      <PokemonSpriteBack url={pokemonTeam[0].sprites.back_default} />
-      <div className={styles.trainerStats}></div>
+      <PokemonSprite url={pokemonTeam[0].sprites.back_default} />
+      <TrainerStats
+        pokemonTeam={pokemonTeam}
+        pokemon={pokemonTeam.find((pokemon) => pokemon.active) as PokemonTeam}
+      />
     </div>
   );
 };

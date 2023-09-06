@@ -22,12 +22,8 @@ const Enemy = () => {
       spDefense: 120,
       speed: 120,
     },
-    active: false,
+    active: index === 0 ? true : false,
   }));
-
-  useEffect(() => {
-    enemyTeam[0].active = true;
-  }, []);
 
   return (
     <div className={styles.container}>

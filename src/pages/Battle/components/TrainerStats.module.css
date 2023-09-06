@@ -1,5 +1,14 @@
 .container {
   display: flex;
-  background-color: rgb(199, 199, 199);
+  background-color: rgb(255, 255, 255);
   border-radius: 10px;
+  height: 50%;
+  border: 2px solid rgb(58, 58, 58);
+  padding: 30px;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 26px;
 }

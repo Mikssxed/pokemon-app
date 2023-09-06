@@ -8,7 +8,11 @@ const TrainerStats: FC<{
   pokemonTeam: PokemonTeam[];
 }> = ({ pokemon, pokemonTeam }) => {
   const { moves } = useContext(PokemonListContext);
-  return <div className={styles.container}></div>;
+  return (
+    <div className={styles.container}>
+      <div className={styles.name}>{pokemon?.name}</div>
+    </div>
+  );
 };
 
 export default TrainerStats;

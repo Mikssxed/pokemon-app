@@ -168,7 +168,7 @@ const PokemonListProvider: FC<{ children: ReactNode }> = (props) => {
         spDefense: 0,
         speed: 0,
       },
-      active: false,
+      active: index === 0 ? true : false,
     })),
     pokemonData: {
       name: "",

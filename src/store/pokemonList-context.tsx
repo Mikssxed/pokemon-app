@@ -69,7 +69,7 @@ const PokemonListContext = createContext<PokemonListContext>({
       spDefense: 0,
       speed: 0,
     },
-    active: false,
+    active: index === 0 ? true : false,
   })),
   editPokemon: (id) => {},
   // loadMoves: (name) => {},

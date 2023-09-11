@@ -1,8 +1,6 @@
 .container {
-  display: flex;
   background-color: rgb(255, 255, 255);
   border-radius: 10px;
-  height: 50%;
   border: 2px solid rgb(58, 58, 58);
   padding: 30px;
 }
@@ -11,4 +9,42 @@
   font-weight: 700;
   font-size: 26px;
   line-height: 26px;
+  text-transform: capitalize;
+}
+
+.hp {
+  width: 200px;
+  height: 5px;
+  border: 1px solid black;
+  border-radius: 2px;
+}
+
+.secondRow {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 20px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pokeball {
+  width: 20px;
+}
+
+.inactive {
+  filter: grayscale(1);
+}
+
+.level {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.hpFill {
+  background-color: rgb(0, 160, 0);
+  height: 100%;
+}
+
+.hpNumber {
+  text-align: right;
 }

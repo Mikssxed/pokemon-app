@@ -8,10 +8,6 @@ import { PokemonTeam } from "../../../utils/types/types";
 const MyArea = () => {
   const { pokemonTeam } = useContext(PokemonListContext);
 
-  useEffect(() => {
-    pokemonTeam[0].active = true;
-  }, []);
-
   return (
     <div className={styles.container}>
       <PokemonSprite url={pokemonTeam[0].sprites.back_default} />

@@ -11,7 +11,15 @@ const TrainerStats: FC<{
 }> = ({ pokemon, pokemonTeam }) => {
   const { moves } = useContext(PokemonListContext);
 
-  const currentPokemon = structuredClone(pokemon);
+  const currentPokemon = {
+    ...structuredClone(pokemon),
+    selectedMoves: pokemon.selectedMoves.map((move) => {
+      if (move === "empty") {
+        return { name: move };
+      }
+      return moves.find((dataMove) => dataMove.name === move);
+    }),
+  };
 
   const pokemonBall = pokemonTeam
     .filter((pokemon) => pokemon.name)

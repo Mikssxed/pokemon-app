@@ -20,7 +20,11 @@ const router = createBrowserRouter([
           { path: "ManageTeam", element: <ManageTeam /> },
         ],
       },
-      { path: "/Battle", element: <Battle /> },
+      {
+        path: "/Battle",
+        element: <Battle />,
+        children: [{ path: "fight" }, { path: "select" }],
+      },
     ],
   },
 ]);

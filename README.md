@@ -1,4 +1,4 @@
-#IN PROGRESS
+IN PROGRESS
 LIVE: https://pokebuild.netlify.app/
 # Pokémon Team Builder and Battle App
 
